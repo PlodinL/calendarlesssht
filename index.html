@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.css">
+    <link rel="stylesheet" href="shit.css">
+
+</head>
+<body>
+
+    <button onclick="redirectToLogin()">Login</button>
+    <button onclick="redirectToSignup()">Sign Up</button>
+
+
+    <select id="backgroundSelector" onchange="changeBackground()">
+        <option value="banana">Banana</option>
+        <option value="banana2">Banana2</option>
+        <option value="banana3">Banana3</option>
+      </select>
+
+    <div id="calendar"></div>
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <h2></h2>
+            <form id="eventForm">
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js"></script>
+    <script>
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    var activeEventDetails = null;
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        eventBackgroundColor: "#008000",
+        events: [
+            {
+                title: "New Year",
+                start: "2024-01-01",
+                editable: false,
+                extendedProps: {
+                    description: 'Description of the event.',
+                    premade: true 
+                }
+            },
+            {
+                title: "Resume of Classes",
+                start: "2024-01-03",
+                editable: false,
+                extendedProps: {
+                    description: 'Description of the event.',
+                    premade: true 
+                }
+            },
+            {
+                title: "HUMake A Difference",
+                start: "2024-01-05",
+                editable: false,
+                extendedProps: {
+                    description: 'League of Humanities Event',
+                    premade: true 
+                }
+            }
+        ],
+        eventClick: function (info) {
+    if (info.event.extendedProps.premade) {
+        var eventTime = info.event.start.toLocaleTimeString([], {
+            hour: '2-digit',
+        });
+        var eventDescription = info.event.extendedProps.description;
+
+        var eventDetails = info.el.querySelector('.event-details'); // check if event details already exist
+        if (!eventDetails) {
+            eventDetails = document.createElement('div');
+            eventDetails.classList.add('event-details');
+            eventDetails.innerHTML = "<p><strong>Description:</strong> " + eventDescription + "</p>";
+            info.el.appendChild(eventDetails);
+        }
+
+        activeEventDetails = eventDetails;
+
+        info.el.addEventListener('mouseleave', function () {
+            if (activeEventDetails) {
+                activeEventDetails.remove();
+                activeEventDetails = null;
+            }
+        });
+    } else {
+        if (!info.el.classList.contains('user-event')) {
+            var eventTime = info.event.start.toLocaleTimeString([], {
+                hour: '2-digit',
+            });
+            var eventDescription = info.event.extendedProps.description;
+
+            var cancelButton = document.createElement('button');
+            cancelButton.textContent = 'Cancel';
+            cancelButton.classList.add('event-cancel');
+            cancelButton.addEventListener('click', function () {
+                info.event.remove();
+            });
+
+            var eventDetails = document.createElement('div');
+            eventDetails.classList.add('event-details');
+            eventDetails.innerHTML = "<p><strong>Description:</strong> " + eventDescription + "</p>";
+            eventDetails.appendChild(cancelButton);
+            info.el.appendChild(eventDetails);
+            activeEventDetails = eventDetails;
+            info.el.classList.add('user-event');
+
+            info.el.addEventListener('mouseleave', function () {
+                if (activeEventDetails) {
+                    activeEventDetails.remove();
+                    activeEventDetails = null;
+                }
+            });
+        }
+    }
+},
+        editable: true,
+        selectable: true,
+        select: function (info) {
+            var eventTitle = prompt("Event Title:");
+            var eventDescription = prompt("Event Description:");
+            if (eventTitle && eventDescription) {
+                var start = info.startStr;
+                calendar.addEvent({
+                    title: eventTitle,
+                    start: start,
+                    description: eventDescription,
+                });
+            }
+        },
+        eventDrop: function (info) {
+            var event = info.event;
+            var newStart = event.start.toISOString();
+            var newEnd = event.end ? event.end.toISOString() : null;
+            console.log("Event " + event.title + " was dropped to " + newStart);
+            console.log("New end date: " + newEnd);
+        },
+        eventResize: function (info) {
+            var event = info.event;
+            var newStart = event.start.toISOString();
+            var newEnd = event.end ? event.end.toISOString() : null;
+            console.log("Event " + event.title + " was resized");
+            console.log("New start date: " + newStart);
+            console.log("New end date: " + newEnd);
+        }
+    });
+    calendar.render();
+});
+
+        var backgroundOptions = {
+  banana: 'banana.jpg',
+  banana2: 'banana2.jpg',
+  banana3: 'banana3.jpg'
+};
+
+var currentBackgroundIndex = 0;
+
+function changeBackground() {
+  var selector = document.getElementById('backgroundSelector');
+  var selectedOption = selector.value;
+  var background = backgroundOptions[selectedOption];
+  
+  document.querySelector('body').style.backgroundImage = `url('${background}')`;
+  
+  localStorage.setItem('selectedBackground', selectedOption);
+}
+
+var storedBackground = localStorage.getItem('selectedBackground');
+if (storedBackground) {
+
+  var selector = document.getElementById('backgroundSelector');
+  selector.value = storedBackground;
+}
+
+changeBackground();
+
+function redirectToLogin() {
+                window.location.href = "login.html";
+            }
+
+            function redirectToSignup() {
+                window.location.href = "signup.html";
+            }
+
+
+
+
+    </script>
+</body>
+</html>

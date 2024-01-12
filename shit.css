@@ -1,0 +1,65 @@
+    
+    body {
+    background-image: url('banana.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    }
+
+    #calendar {
+        max-width: 100%;
+        height: 100vh;
+        margin: 0 auto;
+    }
+
+    .event-details {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        max-width: 300px;
+        margin: 10px auto; 
+    }
+    .event-details strong {
+        display: block;
+        margin-bottom: 5px; 
+
+    }
+    .event-details p {
+        margin-bottom: 10px; 
+    }
+
+    .event-cancel {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin-top: 10px; 
+    }
+
+    .calendar-container {
+        position: relative;
+      }
+      
+      #calendar {
+        z-index: 1; 
+      }
+      
+      #backgroundSelector {
+        position: absolute;
+        bottom: 50px; 
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f2f2f2;
+        color: #333;
+        width: 200px;
+        margin-bottom: -110px;
+        z-index: 8; 
+      }
